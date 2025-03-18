@@ -6,6 +6,37 @@ The pairs are categorized as either `support`, `attack` or `neutral`.
 
 ## Usage
 
+Create a virtual environment using your preferred method :
+
+### Environment
+
+#### Conda
+
+You can use the `environment.yml` file provided in this repository. It'll create an environment using the name `tk-rbam`.
+
+```sh
+conda env create -f environment.yml
+conda activate tk-rbam
+```
+
+#### Venv
+
+You can use the `requirements.txt` file provided in this repository.  
+Create and activate the environment using :
+
+```sh
+python -m .venv-tk-rbam
+source .venv-tk-rbam/bin/activate
+```
+
+Then install the packages using pip :
+
+```sh
+pip install -r requirements.txt
+```
+
+### Notebooks
+
 After installing the necessary libraries in a virtual environment, simply run :
 
 - the [`kialo.ipynb`](tool/kialo.ipynb) Jupyter notebook to download the debates in text format and sort them by language
