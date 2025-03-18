@@ -1,6 +1,6 @@
-# Ternary Kialo RBAM (TK-RbAM)
+# Ternary Kialo RbAM (TK-RbAM)
 
-Ternary Kialo RBAM (TK-RbAM) is a dataset for Relation-based Argument Mining (RbAM) comprising pairs of arguments from the most active and best ranked Kialo.com debates.  
+Ternary Kialo RbAM (TK-RbAM) is a dataset for Relation-based Argument Mining (RbAM) comprising pairs of arguments from the most active and best ranked Kialo.com debates.  
 
 The pairs are categorized as either `support`, `attack` or `neutral`.  
 
@@ -40,7 +40,11 @@ pip install -r requirements.txt
 After installing the necessary libraries in a virtual environment, simply run :
 
 - the [`kialo.ipynb`](tool/kialo.ipynb) Jupyter notebook to download the debates in text format and sort them by language
+  - this will update the [`kialo-url-ids.csv`](rawData/kialo/kialo-url-ids.csv) file that contains the URLs of all debates to be parsed.
 - the [`process.ipynb`](processedData/kialo-2-RBAM/process.ipynb) Jupyter notebook to parse, process and generate the dataset in csv file (`kialoPairs.csv`)
+  - this will generate two CSV files inside the [`processedData/kialo-2-RBAM`](processedData/kialo-2-RBAM/) directory
+    - `kialoPairs.csv` is the final TK-BRbM dataset
+    - `kialoPairsRaw.csv` is an intermediate dataset containing more unfiltered rows
 
 ## Sources
 
@@ -124,3 +128,14 @@ The Ternary Kialo RBAM is characterized by the following :
 |-|-|-|
 | Mean length | 151.21 | 137.86 |
 | Standard deviation | 76.17 | 73.36 |
+
+### Dataset columns
+
+The dataset is comprised of the following 6 columns :
+
+- `topic` : list of strings - all the tags attributed to the debate the argument pair is taken from;
+- `argSrc` : string - the argument contained within the child node, attacking or supporting its parent node (or not if neutral);
+- `argTrg` : string - the argument contained within the parent node, attacked or supported by a child node (or not if neutral);
+- `relation` : string corresponding to the relation argSrc -> argTrg. Values are either `support`, `attack` or `neutral`;
+- `sameTree` : boolean - whether or not the pair of arguments are from the same tree/debate;
+- `similarity` : float - cosine similarity computed on embeddings produced by aforementionned language model.
