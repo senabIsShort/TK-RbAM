@@ -1,0 +1,3 @@
+rawData/kialo/debates/**/**.txt
+processedData/kialo-2-RBAM/**.csv
+datasets/RBAM/**.csv
