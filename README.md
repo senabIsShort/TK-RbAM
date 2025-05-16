@@ -39,7 +39,7 @@ pip install -r requirements.txt
 
 After installing the necessary libraries in a virtual environment, simply run :
 
-- the [`getDebatesData.py`](getDebatesData.py) script to download the debates in text format and sort them by language
+- **#1** : the [`getDebatesData.py`](getDebatesData.py) script to download the debates in text format and sort them by language
   - at the root of this repository, run `python getDebatesData.py`
   - this will create/update the [`kialo-url-ids.csv`](rawData/kialo/kialo-url-ids.csv) file that contains the URLs of all debates to be parsed. By default, the file is created inside the [rawData](rawData/) folder, while the debate text files are downloaded within a subfolder named [debates](rawData/debates/).
 
@@ -51,7 +51,7 @@ After installing the necessary libraries in a virtual environment, simply run :
 > downloadPath = os.path.abspath("rawData/debates")
 > ```
 
-- the [`processData.py`](processData.py) script to parse, process and generate the dataset in csv file (`kialoPairs.csv`)
+- **#2** : the [`processData.py`](processData.py) script to parse, process and generate the dataset in csv file (`kialoPairs.csv`)
   - at the root of this repository, run `python processData.py`
   - this will generate two CSV files inside, by default, the [`processedData`](processedData/) directory
     - `kialoPairsRaw.csv` is a complete dataset containing unfiltered rows (around a million, with more neutral pairs)
