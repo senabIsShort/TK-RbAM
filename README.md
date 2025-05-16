@@ -35,16 +35,48 @@ Then install the packages using pip :
 pip install -r requirements.txt
 ```
 
-### Notebooks
+### Scripts
 
 After installing the necessary libraries in a virtual environment, simply run :
 
-- the [`kialo.ipynb`](tool/kialo.ipynb) Jupyter notebook to download the debates in text format and sort them by language
-  - this will update the [`kialo-url-ids.csv`](rawData/kialo/kialo-url-ids.csv) file that contains the URLs of all debates to be parsed.
-- the [`process.ipynb`](processedData/kialo-2-RBAM/process.ipynb) Jupyter notebook to parse, process and generate the dataset in csv file (`kialoPairs.csv`)
-  - this will generate two CSV files inside the [`processedData/kialo-2-RBAM`](processedData/kialo-2-RBAM/) directory
-    - `kialoPairs.csv` is the final TK-BRbM dataset
-    - `kialoPairsRaw.csv` is an intermediate dataset containing more unfiltered rows
+- the [`getDebatesData.py`](getDebatesData.py) script to download the debates in text format and sort them by language
+  - at the root of this repository, run `python getDebatesData.py`
+  - this will create/update the [`kialo-url-ids.csv`](rawData/kialo/kialo-url-ids.csv) file that contains the URLs of all debates to be parsed. By default, the file is created inside the [rawData](rawData/) folder, while the debate text files are downloaded within a subfolder named [debates](rawData/debates/).
+
+> Make sure you change the placeholder `kialoUsername` and `secret` variables at the top of the file. You may also change the `downloadPath` variable to a preferred target folder in which the text files will be downloaded.
+>
+> ```python
+> kialoUsername  = "PLACEHOLDER"
+> secret              = "PLACEHOLDER"
+> downloadPath = os.path.abspath("rawData/debates")
+> ```
+
+- the [`processData.py`](processData.py) script to parse, process and generate the dataset in csv file (`kialoPairs.csv`)
+  - at the root of this repository, run `python processData.py`
+  - this will generate two CSV files inside, by default, the [`processedData`](processedData/) directory
+    - `kialoPairsRaw.csv` is a complete dataset containing unfiltered rows (around a million, with more neutral pairs)
+    - `kialoPairs.csv` is the final TK-BRbM dataset obtained after filtering some of them (down to around 280k rows)
+
+> You may change the `urlIdPath` and `debatesFolderPath` variables at the top of the file to a different source location for the `kialo-url-ids.csv` and kialo debates TXT exported files. `outputPath` is the preferred target folder in which the dataset CSV files will be saved.
+>
+> ```python
+> urlIdPath = os.path.abspath("rawData/kialo-url-ids.csv")
+> debatesFolderPath = os.path.abspath(os.path.join(urlIdPath, os.pardir, "debates", "en")) 
+> outputPath = os.path.abspath("processedData/")
+> ```
+
+The following sections in this README describe the dataset and aim to explain the creation and transformation process.
+
+### Dataset format
+
+Both the `kialoPairs.csv` and `kialoPairsRaw.csv` datasets are comprised of the following 6 columns :
+
+- `topic` : list of strings - all the tags attributed to the debate the argument pair is taken from;
+- `argSrc` : string - the argument contained within the child node, attacking or supporting its parent node (or not if neutral);
+- `argTrg` : string - the argument contained within the parent node, attacked or supported by a child node (or not if neutral);
+- `relation` : string corresponding to the relation argSrc -> argTrg. Values are either `support`, `attack` or `neutral`;
+- `sameTree` : boolean - whether or not the pair of arguments are from the same tree/debate;
+- `similarity` : float - cosine similarity computed on embeddings produced by a language model.
 
 ## Sources
 
@@ -128,14 +160,3 @@ The Ternary Kialo RBAM is characterized by the following :
 |-|-|-|
 | Mean length | 151.21 | 137.86 |
 | Standard deviation | 76.17 | 73.36 |
-
-### Dataset columns
-
-The dataset is comprised of the following 6 columns :
-
-- `topic` : list of strings - all the tags attributed to the debate the argument pair is taken from;
-- `argSrc` : string - the argument contained within the child node, attacking or supporting its parent node (or not if neutral);
-- `argTrg` : string - the argument contained within the parent node, attacked or supported by a child node (or not if neutral);
-- `relation` : string corresponding to the relation argSrc -> argTrg. Values are either `support`, `attack` or `neutral`;
-- `sameTree` : boolean - whether or not the pair of arguments are from the same tree/debate;
-- `similarity` : float - cosine similarity computed on embeddings produced by aforementionned language model.
