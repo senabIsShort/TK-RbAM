@@ -179,7 +179,16 @@ def getNNeutralPairsFromDiffTrees(t1, t2, n = 1000):
 
 
 
-def argumentTree2argumentPairTree(node, domains):    
+def argumentTree2argumentPairTree(node, domains):
+    """Convert an argument tree to a list of argument pairs.
+
+    Args:
+        node (anytree.Node): Node of the argument tree, typically the root node.
+        domains (str): Debate subject tags, i.e. "Politics", "Economics", etc.
+
+    Returns:
+        list: List of argument pairs, where each pair is a dictionary containing the argument pair, the relationship and additional information.
+    """
     pairs = []
     
     if len(node.children) == 0:
